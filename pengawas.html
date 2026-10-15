@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Panel Pengawas Ujian - SMKN 5 Yogyakarta</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f4f8;
+            padding: 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 25px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-top: 5px solid #0d47a1;
+            text-align: center;
+        }
+
+        .header h2 { color: #0d47a1; font-size: 18px; margin-bottom: 4px; }
+        .header p { color: #64748b; font-size: 12px; margin-bottom: 18px; }
+
+        .form-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 6px; }
+        input[type="password"] {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 15px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        input:focus { outline: none; border-color: #0d47a1; }
+
+        .btn {
+            width: 100%;
+            padding: 11px;
+            background: #0d47a1;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn:hover { background: #1565c0; }
+
+        .error-msg { color: #dc2626; font-size: 12px; margin-top: 10px; display: none; }
+
+        .token-box { background: #eff6ff; border: 2px dashed #2563eb; border-radius: 8px; padding: 20px; margin: 15px 0; }
+        .token-val { font-size: 36px; font-weight: 800; color: #1e3a8a; letter-spacing: 4px; margin: 8px 0; }
+        .timer { font-size: 12px; color: #64748b; font-weight: 600; }
+
+        #tokenDisplaySection { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h2>Panel Pengawas Ujian Kelas XII</h2>
+            <p>Token Dinamis (Berganti Tiap 15 Menit)</p>
+        </div>
+
+        <div id="pinSection">
+            <div class="form-group">
+                <label for="pinInput">MASUKKAN PIN PENGAWAS</label>
+                <input type="password" id="pinInput" placeholder="****" maxlength="6" autocomplete="off">
+            </div>
+            <button onclick="verifyPin()" class="btn">Buka Panel Token</button>
+            <div id="pinError" class="error-msg">PIN Pengawas Salah!</div>
+        </div>
+
+        <div id="tokenDisplaySection">
+            <div class="token-box">
+                <div style="font-size: 11px; font-weight:700; color:#1e40af;">TOKEN SAAT INI</div>
+                <div id="tokenVal" class="token-val">----</div>
+                <div class="timer">Berganti otomatis dalam: <span id="countdown" style="color:#d97706;">--:--</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const SECRET_KEY = 5791;
+    const PIN_PENGAWAS = "USSM57";
+    let timerInterval = null;
+
+    // SKEMA BARU: LCG (Linear Congruential Generator) + Perkalian Bilangan Prima
+    function generate15MinToken() {
+        const now = new Date();
+        const tanggal = now.getDate();
+        const bulan = now.getMonth() + 1;
+        const jam = now.getHours();
+        const blok15Menit = Math.floor(now.getMinutes() / 15);
+        
+        // 1. Pembentukan Seed berdasarkan waktu + SECRET_KEY
+        let seed = (tanggal * 73) + (bulan * 31) + (jam * 13) + (blok15Menit * 7) + SECRET_KEY;
+        
+        // 2. Formula LCG (a * seed + c) % m menggunakan konstanta acak standar
+        let lcgVal = (seed * 1664525 + 1013904223) % 4294967296;
+        
+        // 3. Modulo 10000 untuk mengambil 4 digit angka acak
+        const hashCode = Math.abs(lcgVal) % 10000;
+        
+        return "K5-" + String(hashCode).padStart(4, '0');
+    }
+
+    function verifyPin() {
+        const inputPin = document.getElementById('pinInput').value;
+        if (inputPin === PIN_PENGAWAS) {
+            document.getElementById('pinSection').style.display = 'none';
+            document.getElementById('tokenDisplaySection').style.display = 'block';
+            document.getElementById('pinError').style.display = 'none';
+            startPengawasEngine();
+        } else {
+            document.getElementById('pinError').style.display = 'block';
+        }
+    }
+
+    function startPengawasEngine() {
+        function update() {
+            const now = new Date();
+            document.getElementById('tokenVal').innerText = generate15MinToken();
+
+            const menitSaatIni = now.getMinutes();
+            const sisaMenit = 14 - (menitSaatIni % 15);
+            const sisaDetik = 59 - now.getSeconds();
+
+            document.getElementById('countdown').innerText = 
+                String(sisaMenit).padStart(2, '0') + ":" + String(sisaDetik).padStart(2, '0');
+        }
+
+        update();
+        clearInterval(timerInterval);
+        timerInterval = setInterval(update, 1000);
+    }
+
+    document.getElementById('pinInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            verifyPin();
+        }
+    });
+</script>
+
+</body>
+</html>
