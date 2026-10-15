@@ -448,4 +448,31 @@
     }
 
     function keluarDariSoal() {
-        document.getElementById
+        document.getElementById('gformIframe').src = 'about:blank';
+        document.getElementById('gformSection').style.display = 'none';
+        jumlahKabur = 0;
+        logout();
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const inputVal = document.getElementById('tokenInput').value.trim().toUpperCase();
+        const validToken = generate15MinToken();
+
+        if (inputVal === validToken) {
+            document.getElementById('loginError').style.display = 'none';
+            requestWakeLock();
+            switchTab('menu');
+        } else {
+            document.getElementById('loginError').style.display = 'block';
+        }
+    });
+
+    function logout() {
+        document.getElementById('tokenInput').value = '';
+        switchTab('login');
+    }
+</script>
+
+</body>
+</html>
