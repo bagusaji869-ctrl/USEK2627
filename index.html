@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ujian Sekolah SMKN 5 Yogyakarta 2026/2027</title>
+    <title>UJIAN Sekolah SMKN 5 Yogyakarta 2026/2027</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         
@@ -54,7 +54,7 @@
 
         .form-group { margin-bottom: 15px; text-align: left; }
         label { display: block; font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 6px; }
-        input[type="text"], select {
+        input[type="text"] {
             width: 100%;
             padding: 11px;
             border: 1px solid #cbd5e1;
@@ -62,12 +62,10 @@
             font-size: 14px;
             text-align: center;
             background-color: #fff;
-        }
-        input[type="text"] {
             letter-spacing: 2px;
             text-transform: uppercase;
         }
-        input:focus, select:focus { outline: none; border-color: #0d47a1; }
+        input:focus { outline: none; border-color: #0d47a1; }
 
         .btn {
             width: 100%;
@@ -107,7 +105,7 @@
             align-items: center;
             text-align: left;
         }
-        .menu-list { max-height: 48vh; overflow-y: auto; padding-right: 4px; }
+        .menu-list { max-height: 52vh; overflow-y: auto; padding-right: 4px; }
         .item-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin-bottom: 10px; text-align: left; }
         .item-title { font-size: 14px; font-weight: 700; color: #0d47a1; margin-bottom: 4px; }
         .item-info { font-size: 11px; color: #64748b; margin-bottom: 10px; }
@@ -187,7 +185,7 @@
         <!-- HALAMAN UTAMA / LOGIN SISWA -->
         <div id="loginSection" class="card">
             <div class="header">
-                <img src="images.jfif" alt="Logo SMKN 5 Yogyakarta" class="school-logo">
+                <img src="images.jpg" alt="Logo SMKN 5 Yogyakarta" class="school-logo">
                 <h2>UJIAN Sekolah SMKN 5 Yogyakarta 2026/2027</h2>
                 <p>Masukkan Token Ujian Sesi 15-Menit</p>
             </div>
@@ -212,25 +210,13 @@
             <div class="menu-header">
                 <div>
                     <h1 style="font-size:13px;">UJIAN Sekolah SMKN 5 Yogyakarta 2026/2027</h1>
-                    <p style="font-size: 10px; color: #93c5fd;" id="subHeaderInfo">Menu Mata Pelajaran Hari Ini</p>
+                    <p style="font-size: 10px; color: #93c5fd;" id="subHeaderInfo">Menu Ujian Hari Ini</p>
                 </div>
                 <button onclick="logout()" class="btn btn-danger">Keluar</button>
             </div>
 
-            <!-- TANGGAL AKAN DITETAPKAN OTOMATIS BERDASARKAN HARI INI -->
-            <div class="form-group">
-                <label for="selectTanggal">HARI / TANGGAL UJIAN:</label>
-                <select id="selectTanggal" onchange="renderMenuSchedule()">
-                    <option value="2026-11-02">Senin, 2 November 2026</option>
-                    <option value="2026-11-03">Selasa, 3 November 2026</option>
-                    <option value="2026-11-04">Rabu, 4 November 2026</option>
-                    <option value="2026-11-05">Kamis, 5 November 2026</option>
-                    <option value="2026-11-06">Jum'at, 6 November 2026</option>
-                </select>
-            </div>
-
             <div class="menu-list" id="menuListContainer">
-                <!-- Konten Mata Pelajaran Akan Ditampilkan Otomatis Menurut Hari -->
+                <!-- Konten Mata Pelajaran Ditampilkan Otomatis Menurut Hari Ini -->
             </div>
         </div>
 
@@ -362,36 +348,27 @@
         return "K5-" + String(hashCode).padStart(4, '0');
     }
 
-    // MENDETEKSI TANGGAL HARI INI SECARA OTOMATIS
-    function setTanggalOtomatisHariIni() {
+    function renderMenuSchedule() {
         const now = new Date();
         const yyyy = now.getFullYear();
         const mm = String(now.getMonth() + 1).padStart(2, '0');
         const dd = String(now.getDate()).padStart(2, '0');
         const todayStr = `${yyyy}-${mm}-${dd}`;
 
-        const selectEl = document.getElementById('selectTanggal');
-        
-        // Jika hari ini berada pada rentang tanggal ujian, langsung aktifkan tanggal hari ini
-        if (jadwalUjian[todayStr]) {
-            selectEl.value = todayStr;
-        } else {
-            // Jika di luar tanggal ujian, default menampilkan tanggal pertama
-            selectEl.value = "2026-11-02";
-        }
-    }
-
-    function renderMenuSchedule() {
-        const selectedTanggal = document.getElementById('selectTanggal').value;
         const container = document.getElementById('menuListContainer');
+        const subHeaderInfo = document.getElementById('subHeaderInfo');
         container.innerHTML = '';
 
-        const listMapel = jadwalUjian[selectedTanggal];
+        const listMapel = jadwalUjian[todayStr];
 
         if (!listMapel || listMapel.length === 0) {
-            container.innerHTML = `<div class="no-schedule-msg">Tidak ada jadwal ujian untuk tanggal ini, ikuti ujian sesuai waktu yang dijadwalkan sekolah!</div>`;
+            subHeaderInfo.textContent = "Tidak Ada Jadwal Hari Ini";
+            container.innerHTML = `<div class="no-schedule-msg">Tidak ada jadwal ujian untuk hari ini. Silakan ikuti ujian sesuai jadwal resmi sekolah!</div>`;
             return;
         }
+
+        const opsiTanggal = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        subHeaderInfo.textContent = now.toLocaleDateString('id-ID', opsiTanggal);
 
         let htmlContent = '';
         listMapel.forEach(item => {
@@ -416,7 +393,6 @@
             document.getElementById('loginSection').style.display = 'block';
             releaseWakeLock();
         } else if (target === 'menu') {
-            setTanggalOtomatisHariIni();
             renderMenuSchedule();
             document.getElementById('menuSection').style.display = 'block';
         }
