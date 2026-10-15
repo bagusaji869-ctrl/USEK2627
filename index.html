@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UJIAN Sekolah SMKN 5 Yogyakarta 2026/2027</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: fixed;
+            background-color: #f0f4f8;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            padding: 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 25px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-top: 5px solid #0d47a1;
+            text-align: center;
+        }
+
+        .school-logo {
+            width: 80px;
+            height: auto;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .header h2 { color: #0d47a1; font-size: 17px; margin-bottom: 4px; }
+        .header p { color: #64748b; font-size: 12px; margin-bottom: 18px; }
+
+        .form-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 6px; }
+        input[type="text"], select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+            text-align: center;
+            background-color: #fff;
+        }
+        input[type="text"] {
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        input:focus, select:focus { outline: none; border-color: #0d47a1; }
+
+        .btn {
+            width: 100%;
+            padding: 11px;
+            background: #0d47a1;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn:hover { background: #1565c0; }
+        .btn-danger { background: #ef4444; padding: 6px 12px; font-size: 11px; width: auto; }
+        .btn-danger:hover { background: #dc2626; }
+
+        .error-msg { color: #dc2626; font-size: 12px; margin-top: 10px; display: none; }
+
+        .footer-info {
+            font-size: 10px;
+            color: #94a3b8;
+            margin-top: 20px;
+            line-height: 1.4;
+        }
+
+        #menuSection, #gformSection { display: none; }
+
+        .menu-header {
+            background: #0d47a1;
+            color: #ffffff;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+        }
+        .menu-list { max-height: 48vh; overflow-y: auto; padding-right: 4px; }
+        .item-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin-bottom: 10px; text-align: left; }
+        .item-title { font-size: 14px; font-weight: 700; color: #0d47a1; margin-bottom: 4px; }
+        .item-info { font-size: 11px; color: #64748b; margin-bottom: 10px; }
+        
+        .btn-gform {
+            display: block;
+            text-align: center;
+            background: #2563eb;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 9px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+        }
+        .btn-gform:hover { background: #1d4ed8; }
+
+        .no-schedule-msg {
+            background: #fffbebf8;
+            border: 1px solid #fef3c7;
+            color: #b45309;
+            padding: 18px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+
+        #gformSection {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #ffffff;
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+        }
+        .gform-bar {
+            height: 50px;
+            background: #0d47a1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+        .btn-back-portal {
+            background: #e2e8f0;
+            color: #0f172a;
+            border: none;
+            padding: 7px 12px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .btn-back-portal:hover { background: #cbd5e1; }
+        .gform-iframe {
+            flex: 1;
+            width: 100%;
+            height: calc(100vh - 50px);
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="container">
+
+        <!-- HALAMAN UTAMA / LOGIN SISWA -->
+        <div id="loginSection" class="card">
+            <div class="header">
+                <img src="images.jpg" alt="Logo SMKN 5 Yogyakarta" class="school-logo">
+                <h2>UJIAN Sekolah SMKN 5 Yogyakarta 2026/2027</h2>
+                <p>Masukkan Token Ujian Sesi 15-Menit</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="tokenInput">TOKEN UJIAN</label>
+                    <input type="text" id="tokenInput" placeholder="Contoh: K5-8392" maxlength="10" required autocomplete="off">
+                </div>
+                <button type="submit" class="btn">Masuk Portal Ujian</button>
+                <div id="loginError" class="error-msg">Token salah atau sudah kadaluwarsa!</div>
+            </form>
+
+            <div class="footer-info">
+                Dilarang keras berpindah aplikasi selama ujian.<br>
+                © SMKN 5 Yogyakarta
+            </div>
+        </div>
+
+        <!-- HALAMAN MENU MATA PELAJARAN -->
+        <div id="menuSection" class="card">
+            <div class="menu-header">
+                <div>
+                    <h1 style="font-size:13px;">UJIAN Sekolah SMKN 5 Yogyakarta 2026/2027</h1>
+                    <p style="font-size: 10px; color: #93c5fd;" id="subHeaderInfo">Menu Mata Pelajaran Hari Ini</p>
+                </div>
+                <button onclick="logout()" class="btn btn-danger">Keluar</button>
+            </div>
+
+            <!-- TANGGAL AKAN DITETAPKAN OTOMATIS BERDASARKAN HARI INI -->
+            <div class="form-group">
+                <label for="selectTanggal">HARI / TANGGAL UJIAN:</label>
+                <select id="selectTanggal" onchange="renderMenuSchedule()">
+                    <option value="2026-11-02">Senin, 2 November 2026</option>
+                    <option value="2026-11-03">Selasa, 3 November 2026</option>
+                    <option value="2026-11-04">Rabu, 4 November 2026</option>
+                    <option value="2026-11-05">Kamis, 5 November 2026</option>
+                    <option value="2026-11-06">Jum'at, 6 November 2026</option>
+                </select>
+            </div>
+
+            <div class="menu-list" id="menuListContainer">
+                <!-- Konten Mata Pelajaran Akan Ditampilkan Otomatis Menurut Hari -->
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- LAYAR GOOGLE FORM -->
+<div id="gformSection">
+    <div class="gform-bar">
+        <span style="color: #ffffff; font-size: 12px; font-weight: 600;">UJIAN Sekolah SMKN 5 Yogyakarta 2026/2027</span>
+        <button onclick="keluarDariSoal()" class="btn-back-portal">&larr; Selesai / Kembali ke Login</button>
+    </div>
+    <iframe id="gformIframe" class="gform-iframe" src="about:blank"></iframe>
+</div>
+
+<script>
+    const SECRET_KEY = 5791;
+
+    // DATA JADWAL UJIAN SEKOLAH TAHUN 2026/2027
+    const jadwalUjian = {
+        "2026-11-02": [
+            { title: "Pendidikan Agama dan Budi Pekerti", sesi: "Sesi 1 (07.30 - 09.30)", link: "https://forms.gle/ikRek8PnFQqWweHh7" },
+            { title: "Bahasa Indonesia", sesi: "Sesi 2 (10.00 - 12.00)", link: "https://forms.gle/BDzXaghoqpWAazA19" }
+        ],
+        "2026-11-03": [
+            { title: "Pendidikan Pancasila", sesi: "Sesi 1 (07.30 - 09.30)", link: "https://forms.gle/fwYXW2KTgzedrx4N6" },
+            { title: "Bahasa Jawa", sesi: "Sesi 2 (10.00 - 12.00)", link: "https://forms.gle/mNrMRPDvqDUzKzBi9" }
+        ],
+        "2026-11-04": [
+            { title: "Bahasa Inggris", sesi: "Sesi 1 (07.30 - 09.30)", link: "https://forms.gle/h2Ary1HHNyYAhhDNA" },
+            { title: "Bahasa Jepang", sesi: "Sesi 2 (10.00 - 12.00)", link: "https://forms.gle/nSb7yDt6oP6ne1jg7" }
+        ],
+        "2026-11-05": [
+            { title: "Matematika", sesi: "Sesi 1 (07.30 - 09.30)", link: "https://forms.gle/q5AhkQhnzGX6soqY9" },
+            { title: "Projek Kreatif dan Kewirausahaan (Prkdk) DKV", sesi: "Sesi 2 (10.00 - 12.00)", link: "https://forms.gle/5EAQ1Po6URyAuuDa9" },
+            { title: "Projek Kreatif dan Kewirausahaan (Prkdk) Animasi", sesi: "Sesi 2 (10.00 - 12.00)", link: "https://forms.gle/vSgaHFfyaYHWjVix6" },
+            { title: "Projek Kreatif dan Kewirausahaan (Prkdk) Logam", sesi: "Sesi 2 (10.00 - 12.00)", link: "https://forms.gle/p8CTTqRFsYFAX6bY6" },
+            { title: "Projek Kreatif dan Kewirausahaan (Prkdk) Kulit", sesi: "Sesi 2 (10.00 - 12.00)", link: "https://forms.gle/vCNeEXTejEYzAADd7" },
+            { title: "Projek Kreatif dan Kewirausahaan (Prkdk) Kayu", sesi: "Sesi 2 (10.00 - 12.00)", link: "https://forms.gle/bqkZTTQmR6Lj3svF7" },
+            { title: "Projek Kreatif dan Kewirausahaan (Prkdk) Keramik", sesi: "Sesi 2 (10.00 - 12.00)", link: "https://forms.gle/usLdNvDvMefAZ5CZ6" },
+            { title: "Projek Kreatif dan Kewirausahaan (Prkdk) Tekstil", sesi: "Sesi 2 (10.00 - 12.00)", link: "https://forms.gle/ofh91bakG14RNfNi9" }
+        ],
+        "2026-11-06": [
+            { title: "Mata Pelajaran Pilihan (MAPIL) DKV", sesi: "Sesi 1 (07.15 - 09.15)", link: "https://forms.gle/QnfZdcmQQPqJ6Pv8A" },
+            { title: "Mata Pelajaran Pilihan (MAPIL) Animasi", sesi: "Sesi 1 (07.15 - 09.15)", link: "https://forms.gle/xvPsXnFenanWRAWy9" },
+            { title: "Mata Pelajaran Pilihan (MAPIL) Logam", sesi: "Sesi 1 (07.15 - 09.15)", link: "https://forms.gle/J4GEvH28LkrMUCvU7" },
+            { title: "Mata Pelajaran Pilihan (MAPIL) Kulit", sesi: "Sesi 1 (07.15 - 09.15)", link: "https://forms.gle/eRtPyJdkfKMuvHnL8" },
+            { title: "Mata Pelajaran Pilihan (MAPIL) Kayu", sesi: "Sesi 1 (07.15 - 09.15)", link: "https://forms.gle/kUXVynBxU6tBNjFU6" },
+            { title: "Mata Pelajaran Pilihan (MAPIL) Keramik", sesi: "Sesi 1 (07.15 - 09.15)", link: "https://forms.gle/pkWkimhsaeAR5mzv9" },
+            { title: "Mata Pelajaran Pilihan (MAPIL) Tekstil", sesi: "Sesi 1 (07.15 - 09.15)", link: "https://forms.gle/Lor4wfC2DJXu7NiF8" },
+            { title: "Konsentrasi Kejuruan DKV", sesi: "Sesi 2 (09.45 - 11.45)", link: "https://forms.gle/csb1wDhiCQ1ABefJA" },
+            { title: "Konsentrasi Kejuruan Animasi", sesi: "Sesi 2 (09.45 - 11.45)", link: "https://forms.gle/28uFfikWsK2hFzB78" },
+            { title: "Konsentrasi Kejuruan Logam", sesi: "Sesi 2 (09.45 - 11.45)", link: "https://forms.gle/sbHXotN9QptZzp8t7" },
+            { title: "Konsentrasi Kejuruan Kulit", sesi: "Sesi 2 (09.45 - 11.45)", link: "https://forms.gle/MW33jJQ3dUMndUGu6" },
+            { title: "Konsentrasi Kejuruan Kayu", sesi: "Sesi 2 (09.45 - 11.45)", link: "https://forms.gle/Dr3wjvaksDCf2SLL9" },
+            { title: "Konsentrasi Kejuruan Keramik", sesi: "Sesi 2 (09.45 - 11.45)", link: "https://forms.gle/peZvWxAnMJRBnm829" },
+            { title: "Konsentrasi Kejuruan Tekstil", sesi: "Sesi 2 (09.45 - 11.45)", link: "https://forms.gle/xCzSsco6Ka2xJzks6" }
+        ]
+    };
+
+    let wakeLock = null;
+
+    async function requestWakeLock() {
+        try {
+            if ('wakeLock' in navigator) {
+                wakeLock = await navigator.wakeLock.request('screen');
+            }
+        } catch (err) {
+            console.log("Wake Lock Error:", err);
+        }
+    }
+
+    async function releaseWakeLock() {
+        if (wakeLock !== null) {
+            try {
+                await wakeLock.release();
+                wakeLock = null;
+            } catch (err) {
+                console.log("Release Wake Lock Error:", err);
+            }
+        }
+    }
+
+    let jumlahKabur = 0;
+    const batasKabur = 3;
+
+    document.addEventListener("visibilitychange", async function() {
+        const gformDisplay = document.getElementById('gformSection').style.display;
+        const menuDisplay = document.getElementById('menuSection').style.display;
+
+        if (document.visibilityState === 'visible' && (gformDisplay === 'flex' || menuDisplay === 'block')) {
+            await requestWakeLock();
+        }
+
+        if (document.hidden && (gformDisplay === 'flex' || menuDisplay === 'block')) {
+            jumlahKabur++;
+            
+            if (jumlahKabur >= batasKabur) {
+                alert("UJIAN DIBATALKAN!\n\nAnda telah terdeteksi keluar dari layar ujian sebanyak " + batasKabur + " kali.");
+                keluarDariSoal();
+            } else {
+                alert("PERINGATAN (" + jumlahKabur + "/" + batasKabur + ")!\n\nDilarang keluar aplikasi, membuka tab lain, atau membalas notifikasi!");
+            }
+        }
+    });
+
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'F12' || 
+            (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+            (e.ctrlKey && e.key === 'u') || 
+            (e.ctrlKey && e.key === 'c') || 
+            (e.ctrlKey && e.key === 'v')) {
+            e.preventDefault();
+        }
+    });
+
+    function generate15MinToken() {
+        const now = new Date();
+        const tanggal = now.getDate();
+        const bulan = now.getMonth() + 1;
+        const jam = now.getHours();
+        const blok15Menit = Math.floor(now.getMinutes() / 15);
+        
+        let seed = (tanggal * 73) + (bulan * 31) + (jam * 13) + (blok15Menit * 7) + SECRET_KEY;
+        let lcgVal = (seed * 1664525 + 1013904223) % 4294967296;
+        const hashCode = Math.abs(lcgVal) % 10000;
+        
+        return "K5-" + String(hashCode).padStart(4, '0');
+    }
+
+    // MENDETEKSI TANGGAL HARI INI SECARA OTOMATIS
+    function setTanggalOtomatisHariIni() {
+        const now = new Date();
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const dd = String(now.getDate()).padStart(2, '0');
+        const todayStr = `${yyyy}-${mm}-${dd}`;
+
+        const selectEl = document.getElementById('selectTanggal');
+        
+        // Jika hari ini berada pada rentang tanggal ujian, langsung aktifkan tanggal hari ini
+        if (jadwalUjian[todayStr]) {
+            selectEl.value = todayStr;
+        } else {
+            // Jika di luar tanggal ujian, default menampilkan tanggal pertama
+            selectEl.value = "2026-11-02";
+        }
+    }
+
+    function renderMenuSchedule() {
+        const selectedTanggal = document.getElementById('selectTanggal').value;
+        const container = document.getElementById('menuListContainer');
+        container.innerHTML = '';
+
+        const listMapel = jadwalUjian[selectedTanggal];
+
+        if (!listMapel || listMapel.length === 0) {
+            container.innerHTML = `<div class="no-schedule-msg">Tidak ada jadwal ujian untuk tanggal ini, ikuti ujian sesuai waktu yang dijadwalkan sekolah!</div>`;
+            return;
+        }
+
+        let htmlContent = '';
+        listMapel.forEach(item => {
+            htmlContent += `
+                <div class="item-card">
+                    <div class="item-title">${item.title}</div>
+                    <div class="item-info">Waktu: ${item.sesi}</div>
+                    <button onclick="bukaGForm('${item.link}')" class="btn-gform">Kerjakan Soal</button>
+                </div>
+            `;
+        });
+
+        container.innerHTML = htmlContent;
+    }
+
+    function switchTab(target) {
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('menuSection').style.display = 'none';
+        document.getElementById('gformSection').style.display = 'none';
+
+        if (target === 'login') {
+            document.getElementById('loginSection').style.display = 'block';
+            releaseWakeLock();
+        } else if (target === 'menu') {
+            setTanggalOtomatisHariIni();
+            renderMenuSchedule();
+            document.getElementById('menuSection').style.display = 'block';
+        }
+    }
+
+    function bukaGForm(urlForm) {
+        document.getElementById('gformIframe').src = urlForm;
+        document.getElementById('gformSection').style.display = 'flex';
+        requestWakeLock();
+    }
+
+    function keluarDariSoal() {
+        document.getElementById('gformIframe').src = 'about:blank';
+        document.getElementById('gformSection').style.display = 'none';
+        jumlahKabur = 0;
+        logout();
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const inputVal = document.getElementById('tokenInput').value.trim().toUpperCase();
+        const validToken = generate15MinToken();
+
+        if (inputVal === validToken) {
+            document.getElementById('loginError').style.display = 'none';
+            requestWakeLock();
+            switchTab('menu');
+        } else {
+            document.getElementById('loginError').style.display = 'block';
+        }
+    });
+
+    function logout() {
+        document.getElementById('tokenInput').value = '';
+        switchTab('login');
+    }
+</script>
+
+</body>
+</html>
