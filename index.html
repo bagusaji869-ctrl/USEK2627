@@ -239,96 +239,49 @@
             border: none;
         }
 
-        /* Penyesuaian Responsif Layar Kecil (Smartphone) */
-        @media (max-width: 600px) {
-            .wrapper { padding: 10px; }
-            .card { padding: 20px 15px; }
-            .filter-container { flex-direction: column; align-items: stretch; gap: 6px; }
-            .menu-list { 
-                grid-template-columns: 1fr; 
-                max-height: 50vh;
-            }
+        /* Styling untuk Animasi Teks Berkedip & Kotak Peringatan Pelanggaran */
+        @keyframes blinkingText {
+            0% { opacity: 1; }
+            50% { opacity: 0.2; }
+            100% { opacity: 1; }
         }
-    </style>
-</head>
-<body>
 
-<div class="wrapper">
-    <div class="container">
+        .warning-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 99999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-        <!-- HALAMAN UTAMA / LOGIN SISWA -->
-        <div id="loginSection" class="card">
-            <div class="header">
-                <img src="images.jfif" alt="Logo SMKN 5 Yogyakarta" class="school-logo">
-                <h2>Ujian Sekolah SMKN 5 Yogyakarta 2026/2027</h2>
-                <p>Masukkan Token Ujian Sesi 15-Menit</p>
-            </div>
-            
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="tokenInput">TOKEN UJIAN</label>
-                    <input type="text" id="tokenInput" placeholder="Contoh: K5-8392" maxlength="10" required autocomplete="off">
-                </div>
-                <button type="submit" class="btn">Masuk Portal Ujian</button>
-                <div id="loginError" class="error-msg">Token salah atau sudah kadaluwarsa!</div>
-            </form>
+        .warning-box {
+            background: #ffffff;
+            border: 4px solid #dc2626;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(220, 38, 38, 0.5);
+        }
 
-            <div class="footer-info">
-                Dilarang keras berpindah aplikasi selama ujian.<br>
-                © SMKN 5 Yogyakarta
-            </div>
-        </div>
+        .warning-box h3 {
+            color: #dc2626;
+            font-size: 20px;
+            margin-bottom: 12px;
+            font-weight: 800;
+            animation: blinkingText 0.8s infinite;
+        }
 
-        <!-- HALAMAN MENU MATA PELAJARAN -->
-        <div id="menuSection" class="card">
-            <div class="menu-header">
-                <div>
-                    <h1 style="font-size:15px;">Ujian Sekolah SMKN 5 Yogyakarta 2026/2027</h1>
-                    <p style="font-size: 11px; color: #93c5fd;">Pilih Jadwal Mata Pelajaran Ujian</p>
-                </div>
-                <button onclick="logout()" class="btn btn-danger">Keluar</button>
-            </div>
-
-            <!-- Menu Pull-Down / Dropdown Pilihan Hari -->
-            <div class="filter-container">
-                <label for="daySelect">PILIH HARI UJIAN:</label>
-                <select id="daySelect" class="filter-select" onchange="renderMenuSchedule()">
-                    <option value="2026-11-02">Senin, 2 November 2026</option>
-                    <option value="2026-11-03">Selasa, 3 November 2026</option>
-                    <option value="2026-11-04">Rabu, 4 November 2026</option>
-                    <option value="2026-11-05">Kamis, 5 November 2026</option>
-                    <option value="2026-11-06">Jumat, 6 November 2026</option>
-                </select>
-            </div>
-
-            <div class="menu-list" id="menuListContainer">
-                <!-- Konten Mata Pelajaran Ditampilkan Berdasarkan Dropdown -->
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<!-- LAYAR GOOGLE FORM -->
-<div id="gformSection">
-    <div class="gform-bar">
-        <span style="color: #ffffff; font-size: 13px; font-weight: 600;">Ujian Sekolah SMKN 5 Yogyakarta 2026/2027</span>
-        <button onclick="keluarDariSoal()" class="btn-back-portal">&larr; Selesai / Kembali ke Menu</button>
-    </div>
-    <iframe id="gformIframe" class="gform-iframe" src="about:blank"></iframe>
-</div>
-
-<script>
-    const SECRET_KEY = 5791;
-
-    // DATA JADWAL UJIAN SEKOLAH TAHUN 2026/2027
-    const jadwalUjian = {
-        "2026-11-02": [
-            { title: "Pendidikan Agama Islam dan Budi Pekerti", link: "https://forms.gle/SCbsdAij6m2ygMVFA" },
-            { title: "Pendidikan Agama Kristen dan Budi Pekerti", link: "https://forms.gle/xZh5aSRVZXCt4jtx9" },
-            { title: "Pendidikan Agama Katolik dan Budi Pekerti", link: "https://forms.gle/wqUEN26fTKsFD5hA9" },
-            { title: "Pendidikan Agama Hindu dan Budi Pekerti", link: "https://forms.gle/Zdx6d9SrjzgX8MYj9" },
-            { title: "Bahasa Indonesia", link: "https://forms.gle/h4tiEGaFJrLhbZLbA" }
-        ],
-        "2026-11-03": [
-            { title: "Pendidikan Pancasila", link: "
+        .warning-box p {
+            color: #1e293b;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            font-weight
